@@ -1,26 +1,45 @@
 <template>
   <div>
-    首页
-    <div class="box">
-    </div>
+     <!--三级联动-->
+    <TypeNav></TypeNav>
+     <!--轮播图-->
+    <list-container></list-container>
+    <!--今日推荐-->
+    <Recommend></Recommend>
+    <!-- 商品排行 -->
+    <Rank></Rank>
+    <!-- 猜你喜欢 -->
+    <like></like>
+    <!-- 楼层 -->
+    <Floor></Floor>
+    <Floor></Floor>
+    <!-- 商标 -->
+    <Brand></Brand>
   </div>
 </template>
 <script>
+import ListContainer from "@/pages/Home/listContainer";
+import Recommend from "@/pages/Home/recommend";
+import Rank from "@/pages/Home/rank";
+import Like from "@/pages/Home/like"
+import Floor from "@/pages/Home/Floor"
+import Brand from "@/pages/Home/Brand"
 export default {
-  components: {},
+  components: {
+    ListContainer,
+    Recommend,
+    Rank,
+    Like,
+    Floor,
+    Brand
+  },
   data() {
     return {};
   },
   mounted() {
   },
   methods: {
-    // load() {
-    //   let aa= {
-    //     name: 'ahooks',
-    //     age: 30,
-    //     address: 'test abc'
-    //   }
-    // }
+
   }
 };
 </script>

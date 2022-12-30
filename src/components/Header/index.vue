@@ -8,11 +8,11 @@
             <p>尚品汇欢迎你!</p>
             <p>
               <span>请</span>
-              <a href="#">登录</a>
-              <a
-                href="#"
+              <router-link to="/login">登录</router-link>
+              <router-link
+                to="/register"
                 class="register"
-              >免费注册</a>
+              >免费注册</router-link>
             </p>
           </div>
           <div class="typeList">
@@ -31,25 +31,23 @@
       <!-- 头部第一行(搜索) -->
       <div class="bottom">
         <h1 class="logoArea">
-          <a
-            href="#"
-            title="尚品汇"
-            target="_blank"
+          <router-link
+            to="/home"
             class="logo"
           >
-            <img src="./images/logo.png"></a>
+            <img src="./images/logo.png"></router-link>
         </h1>
         <div class="searchArea">
           <form
-            action="#"
             class="searchForm"
           >
             <input
+              v-model="keyWords"
               type="text"
               id="autocomplete"
               class="input-error input-xxlarge"
             />
-            <button class="sui-btn btn-xlarge btn-danger">搜索</button>
+            <button class="sui-btn btn-xlarge btn-danger" @click="goSearch">搜索</button>
           </form>
         </div>
       </div>
@@ -60,11 +58,28 @@
 export default {
   components: {},
   data () {
-    return {};
+    return {
+      keyWords:''
+    };
   },
   mounted () { },
-  methods: {}
-};
+  methods: {
+    // 去搜索
+    goSearch(){
+      //字符串
+      // this.$router.push('/search/'+this.keyWords)
+      //模版字符串
+      // this.$router.push(`/search/${this.keyWords}`)
+      // 路由穿参
+      //query穿参
+      // this.$router.push({path:'/search',query:{keyWords:this.keyWords}})
+      // params传参
+      this.$router.push({name:'search',params:{keyWords:this.keyWords}})
+      // 共同穿参
+      // this.$router.push({name:"search",params:{keyWords:this.keyWords},query:{keyWords:this.keyWords}})
+    }
+  }
+}
 </script>
 <style lang=less scoped>
 #header {
