@@ -1,6 +1,6 @@
 import requests from "@/utils/requset";
 
-export const getList = (params)=>{
+export const getCategoryList = (params)=>{
     return requests({
         url:'/product/getBaseCategoryList',
         method:'GET',

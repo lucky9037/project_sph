@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import {mapState} from "vuex";
 import ListContainer from "@/pages/Home/listContainer";
 import Recommend from "@/pages/Home/recommend";
 import Rank from "@/pages/Home/rank";
@@ -36,7 +37,10 @@ export default {
   data() {
     return {};
   },
+  computed:{
+  },
   mounted() {
+
   },
   methods: {
 
