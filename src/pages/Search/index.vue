@@ -1,9 +1,10 @@
 <template>
   <div>
     搜索
-    params传参：{{this.$route.params}}
-    query传参：{{this.$route.query}}
-
+<!--    params传参：{{this.$route.params}}-->
+<!--    query传参：{{this.$route.query}}-->
+<!--    引入三级联动组件-->
+    <type-nav></type-nav>
   </div>
 </template>
 <script>

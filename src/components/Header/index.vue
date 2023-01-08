@@ -66,17 +66,12 @@ export default {
   methods: {
     // 去搜索
     goSearch(){
-      //字符串
-      // this.$router.push('/search/'+this.keyWords)
-      //模版字符串
-      // this.$router.push(`/search/${this.keyWords}`)
-      // 路由穿参
-      //query穿参
-      // this.$router.push({path:'/search',query:{keyWords:this.keyWords}})
-      // params传参
-      this.$router.push({name:'search',params:{keyWords:this.keyWords}})
-      // 共同穿参
-      // this.$router.push({name:"search",params:{keyWords:this.keyWords},query:{keyWords:this.keyWords}})
+      // 如果有query参数也需要带过去
+      if(this.$route.query){
+        let location = {name:'search',params:{keyWords:this.keyWords}};
+        location.query = this.$route.query;
+        this.$router.push(location)
+      }
     }
   }
 }

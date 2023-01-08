@@ -3,72 +3,74 @@
     <!-- 商品分类导航 -->
     <div class="type-nav">
       <div class="container">
-       <div @mouseleave="leaveIndex">
+       <div @mouseleave="leaveIndex" @mouseenter="enterShow">
          <h2 class="all">全部商品分类</h2>
-         <nav class="nav">
-           <a href="###">服装城</a>
-           <a href="###">美妆馆</a>
-           <a href="###">尚品汇超市</a>
-           <a href="###">全球购</a>
-           <a href="###">闪购</a>
-           <a href="###">团购</a>
-           <a href="###">有趣</a>
-           <a href="###">秒杀</a>
-         </nav>
-          <!--三级联动-->
-         <div class="sort">
-           <div class="all-sort-list2" @click="goSearch">
-             <div class="item" :class="{cur:currentIndex==index}"  v-for="(item,index) in categoryList" :key='item.categoryId'>
-               <h3 @mouseenter="changeIndex(index)">
-                 <a :data-categoryName = 'item.categoryName' :data-category1Id = 'item.categoryId' href="#">{{item.categoryName}}</a>
-               </h3>
-               <!--二级三级列表-->
-               <div class="item-list" :style="{display:currentIndex==index?'block':'none'}">
-                 <div class="subitem" v-for="items in item.categoryChild" :key="items.categoryId">
-                   <dl class="fore">
-                     <dt>
-                       <a href="#" :data-categoryName = 'items.categoryName' :data-category2Id = 'items.categoryId'>{{ items.categoryName }}</a>
-                     </dt>
-                     <dd v-for="itemson in items.categoryChild" :key="itemson.categoryId">
-                       <em>
-                         <a href="#" :data-categoryName = 'itemson.categoryName' :data-category3Id = 'itemson.categoryId'>{{itemson.categoryName}}</a>
-                       </em>
-                     </dd>
-                   </dl>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
+          <!--三级联动 过渡动画-->
+          <transition name="sort">
+            <div class="sort" v-show = 'show'>
+              <div class="all-sort-list2" @click="goSearch">
+                <div class="item" :class="{cur:currentIndex==index}"  v-for="(item,index) in categoryList" :key='item.categoryId'>
+                  <h3 @mouseenter="changeIndex(index)">
+                    <a :data-categoryName = 'item.categoryName' :data-category1Id = 'item.categoryId' href="#">{{item.categoryName}}</a>
+                  </h3>
+                  <!--二级三级列表-->
+                  <div class="item-list" :style="{display:currentIndex==index?'block':'none'}">
+                    <div class="subitem" v-for="items in item.categoryChild" :key="items.categoryId">
+                      <dl class="fore">
+                        <dt>
+                          <a href="#" :data-categoryName = 'items.categoryName' :data-category2Id = 'items.categoryId'>{{ items.categoryName }}</a>
+                        </dt>
+                        <dd v-for="itemson in items.categoryChild" :key="itemson.categoryId">
+                          <em>
+                            <a href="#" :data-categoryName = 'itemson.categoryName' :data-category3Id = 'itemson.categoryId'>{{itemson.categoryName}}</a>
+                          </em>
+                        </dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
        </div>
+        <nav class="nav">
+          <a href="###">服装城</a>
+          <a href="###">美妆馆</a>
+          <a href="###">尚品汇超市</a>
+          <a href="###">全球购</a>
+          <a href="###">闪购</a>
+          <a href="###">团购</a>
+          <a href="###">有趣</a>
+          <a href="###">秒杀</a>
+        </nav>
       </div>
+
     </div>
   </div>
 </template>
 <script>
-import {getCategoryList} from '@/api'
+import {mapState} from "vuex";
 import throttle from 'lodash/throttle';
 export default {
   name:'TypeNav',
   components: {},
   data() {
     return {
-      categoryList:[],//三级联动数据
       currentIndex:-1, //初始三级背景索引值
+      show:true //三级联动显示隐藏
     };
   },
+  computed:{
+    ...mapState({
+      categoryList:state=>state.home.categoryList
+    })
+  },
   mounted() {
-    this.getThirdList()
+    if(this.$route.path!='/home'){
+      this.show = false
+    }
   },
   methods: {
-    //获取三级联动的列表
-    getThirdList(){
-      getCategoryList().then((res)=>{
-        if(res.code==200){
-          this.categoryList = res.data
-        }
-      })
-    },
     //鼠标进入(节流)
     changeIndex:throttle(function (index){
       this.currentIndex = index
@@ -77,6 +79,13 @@ export default {
     // 鼠标离开
     leaveIndex(){
       this.currentIndex= -1
+      if(this.$route.path!='/home'){
+        this.show = false
+      }
+    },
+    // 鼠标进入
+    enterShow(){
+      this.show = true
     },
     // 跳转到搜索页面，事件委托，编程式导航
     goSearch(event){
@@ -95,8 +104,11 @@ export default {
         }else{
           query.category3id = category3id
         }
-        // 整理参数
-        location.query = query
+        //合并参数 如果有params参数 也需要带过去
+        if(this.$route.params){
+          location.query = query
+          location.params = this.$route.params
+        }
         // 路由跳转
         this.$router.push(location)
       }
@@ -209,6 +221,16 @@ export default {
           background: skyblue;
         }
       }
+    }
+    //根据类名设置过渡动画
+    .sort-enter{
+      height: 0;
+    }
+    .sort-enter-to{
+      height: 461px;
+    }
+    .sort-enter-active{
+      transition: all .5s linear;
     }
   }
 }

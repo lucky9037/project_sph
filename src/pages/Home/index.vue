@@ -11,12 +11,12 @@
     <!-- 猜你喜欢 -->
     <like></like>
     <!-- 楼层 -->
-    <Floor></Floor>
-    <Floor></Floor>
+    <Floor v-for="(floor,index) in floorList" :key="floor.id" :list = 'floor'></Floor>
     <!-- 商标 -->
     <Brand></Brand>
   </div>
 </template>
+
 <script>
 import {mapState} from "vuex";
 import ListContainer from "@/pages/Home/listContainer";
@@ -38,9 +38,11 @@ export default {
     return {};
   },
   computed:{
+    ...mapState({floorList:state=>state.home.floorList})
   },
-  mounted() {
 
+  mounted() {
+    this.$store.dispatch('floorList')
   },
   methods: {
 

@@ -12,6 +12,10 @@ import Header from './components/Header/index.vue'
 import Footer from './components/Footer/index.vue'
 export default {
   name: 'App',
+  mounted() {
+    //派发一个action，获取三级联动的数据 只执行一次
+    this.$store.dispatch('categoryList')
+  },
   components: {
     Header,
     Footer
