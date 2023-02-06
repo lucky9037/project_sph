@@ -41,7 +41,6 @@ const actions = {
        let res = await getFloorList()
         if(res.code==200){
             commit('FLOORLIST',res.data)
-            console.log(res.data)
         }
     }
 };

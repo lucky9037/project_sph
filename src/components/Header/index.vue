@@ -6,13 +6,17 @@
         <div class="container">
           <div class="loginList">
             <p>尚品汇欢迎你!</p>
-            <p>
+            <p v-if="!userName">
               <span>请</span>
               <router-link to="/login">登录</router-link>
               <router-link
                 to="/register"
                 class="register"
               >免费注册</router-link>
+            </p>
+            <p v-else>
+              <a>{{ userName }}</a>
+              <a class="register" @click="logout">退出登录</a>
             </p>
           </div>
           <div class="typeList">
@@ -62,14 +66,35 @@ export default {
       keyWords:''
     };
   },
-  mounted () { },
+  mounted () {
+    this.$bus.$on('clear',()=>{
+      this.keyWords = ''
+    })
+  },
+  computed:{
+    userName(){
+      return this.$store.state.user.nickName
+    }
+  },
   methods: {
+    // 退出登录
+   async logout(){
+      try {
+        await this.$store.dispatch('loginout')
+        this.$router.push('/home')
+      }catch(error){
+
+      }
+    },
     // 去搜索
     goSearch(){
       // 如果有query参数也需要带过去
       if(this.$route.query){
-        let location = {name:'search',params:{keyWords:this.keyWords}};
-        location.query = this.$route.query;
+        let location = {name:'search',params:{keyWords:this.keyWords||undefined}};
+        //确定路径当中有query参数
+        if (this.$route.query.categoryName) {
+          location.query = this.$route.query;
+        }
         this.$router.push(location)
       }
     }

@@ -1,5 +1,6 @@
 //对axios进行二次封装
 import axios from "axios";
+import store from "@/store";
 // 引入进度条及样式
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -13,6 +14,13 @@ const requests  = axios.create({
 requests.interceptors.request.use((config)=>{
     // config:配置对象，对象里有个很重要的属性headers请求头
     nprogress.start()  //进度条开始
+    // if (store.state.shopcart.USER_ID) {
+    //     config.headers.userTempId = store.state.shopcart.USER_ID;
+    // }
+    // token[公共参数]
+    if(store.state.user.token){
+        config.headers.token = store.state.user.token
+    }
     return config;
 })
 // 响应拦截器

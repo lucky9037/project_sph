@@ -95,19 +95,17 @@ export default {
       let {categoryname,category1id,category2id,category3id} = event.target.dataset
       if(categoryname){
         // 整理路由跳转的参数
-        let location = {name:'search'}
-        let query = {categoryName:categoryname}
+        let location = {name:'search',query:{categoryName:categoryname}}
         if(category1id){
-          query.category1id = category1id
+          location.query.category1Id = category1id
         }else if(category2id){
-          query.category2id = category2id
+          location.query.category2Id = category2id
         }else{
-          query.category3id = category3id
+          location.query.category3Id = category3id
         }
         //合并参数 如果有params参数 也需要带过去
-        if(this.$route.params){
-          location.query = query
-          location.params = this.$route.params
+        if (this.$route.params.keyword) {
+          location.params = this.$route.params;
         }
         // 路由跳转
         this.$router.push(location)
@@ -124,6 +122,7 @@ export default {
     margin: 0 auto;
     display: flex;
     position: relative;
+    z-index: 10;
     .all{
       width: 210px;
       height: 45px;
